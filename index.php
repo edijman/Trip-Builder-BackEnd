@@ -11,4 +11,10 @@ $app->get('/hello/{name}', function (Request $request, Response $response, array
 
     return $response;
 });
+
+$app->get('/trip/{departure}/{arrival}', function (Request $req, Response $res, array $args){
+    $departure = $args['departure'];
+    $arrival = $args['arrival'];
+    $res->getBody()->write("Your are departing from $departure and arriving in $arrival");
+});
 $app->run();
