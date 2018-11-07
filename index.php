@@ -19,12 +19,14 @@ $app->get('/itinerary/{departure}/{arrival}', function (Request $req, Response $
 });
 
 $app->get('/cities', function (Request $req, Response $res, array $args){
-    $res->getBody()->write( '[
-        {
-            "name": "asasa",
-            "Code": "AUN"
-        }
-    ]');
+    $res->getBody()->write( '{
+    "cities": [
+                {
+                    "name": "asasa",
+                    "Code": "AUN"
+                }
+              ]}
+    ');
 });
 
 
