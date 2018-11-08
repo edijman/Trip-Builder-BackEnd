@@ -1,6 +1,6 @@
 CREATE TABLE `Airlines` (
 	`id` int(255) NOT NULL UNIQUE,
-	`name` varchar(25) NOT NULL UNIQUE,
+	`name` varchar(100) NOT NULL,
 	`code` varchar(25) NOT NULL UNIQUE,
 	PRIMARY KEY (`id`)
 );
@@ -8,8 +8,8 @@ CREATE TABLE `Airlines` (
 CREATE TABLE `Airports` (
 	`id` int(255) NOT NULL AUTO_INCREMENT UNIQUE,
 	`code` varchar(25) NOT NULL UNIQUE,
-	`city_code` varchar(25) NOT NULL UNIQUE,
-	`name` varchar(50) NOT NULL UNIQUE,
+	`city_code` varchar(25) NOT NULL,
+	`name` varchar(100) NOT NULL UNIQUE,
 	`country_code` varchar(25) NOT NULL,
 	`region_code` varchar(25) NOT NULL,
 	`latitude` FLOAT(10) NOT NULL,
@@ -32,7 +32,7 @@ CREATE TABLE `Flights` (
 
 CREATE TABLE `City` (
 	`id` int NOT NULL AUTO_INCREMENT,
-	`name` varchar(25) NOT NULL,
+	`name` varchar(50) NOT NULL,
 	`code` varchar(25) NOT NULL UNIQUE,
 	`region_code` varchar(25) NOT NULL,
 	`country_code` varchar(25) NOT NULL,
@@ -41,14 +41,14 @@ CREATE TABLE `City` (
 
 CREATE TABLE `Country` (
 	`id` int NOT NULL AUTO_INCREMENT,
-	`name` varchar(25) NOT NULL UNIQUE,
+	`name` varchar(50) NOT NULL UNIQUE,
 	`code` varchar(25) NOT NULL UNIQUE,
 	PRIMARY KEY (`id`)
 );
 
 CREATE TABLE `Region` (
 	`id` int NOT NULL AUTO_INCREMENT,
-	`name` varchar(25) NOT NULL UNIQUE,
+	`name` varchar(100) NOT NULL UNIQUE,
 	`code` varchar(25) NOT NULL UNIQUE,
 	`country_code` varchar(25) NOT NULL,
 	PRIMARY KEY (`id`)
