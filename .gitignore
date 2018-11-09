@@ -8,9 +8,6 @@
 # dependencies
 /vendor
 
-#config
-/config
-
 # IDEs and editors
 /.idea
 .project
