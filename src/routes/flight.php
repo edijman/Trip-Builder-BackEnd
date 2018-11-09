@@ -17,7 +17,7 @@ $app->get('/itinerary/{departure_city_id}/{arrival_city_id}/{departureDate}', fu
     $departCityCode = getCode($departure_city_id, 'departure');
     
     //get Flight based on departure and arrival city code
-    $flight = getFlight($departCityCode, $arriveCityCode, $departureDate);
+    $flight = getDirectFlight($departCityCode, $arriveCityCode, $departureDate);
     $airline = getAirline($flight[0]['airline']);
     $departureAirport = getAirport($departCityCode);
     $arrivalAirport = getAirport($arriveCityCode);
@@ -32,6 +32,15 @@ $app->get('/itinerary/{departure_city_id}/{arrival_city_id}/{departureDate}', fu
                 
             }
     ');
+
+    /**
+     * get type of flight
+     * if it's one way trip user departureDate date only
+     * else use the departure date to get the flight and add result using return date 
+     * returnAirline
+     * returnFlight
+     * return Airport
+     */
 
 });
 
@@ -70,7 +79,8 @@ function getAirline($name){
         echo '{"error": {"text": '.$e->getMessage().'}';
     }
 }
-function getFlight($departCityCode, $arriveCityCode, $departureDate){
+
+function getDirectFlight($departCityCode, $arriveCityCode, $departureDate){
 
     $sql = "SELECT * FROM trip.Flights as flight WHERE `departure_airport` = '$departCityCode' AND `arrival_airport` = '$arriveCityCode' AND `departure_time` >= '$departureDate' AND `departure_time` < ('$departureDate' + INTERVAL 1 DAY) ORDER BY `price` ASC"; 
     try{
