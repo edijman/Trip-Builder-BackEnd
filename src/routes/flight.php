@@ -3,20 +3,21 @@
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 
-$app->get('/itinerary/{departure_city_id}/{arrival_city_id}', function (Request $req, Response $res, array $args){
+$app->get('/itinerary/{departure_city_id}/{arrival_city_id}/{departureDate}', function (Request $req, Response $res, array $args){
 
     $departure_city_id = $args['departure_city_id'];
     $arrival_city_id = $args['arrival_city_id'];
     $departure_date = $args['departure_date'];
     $arrival_date = $args['arrival_date'];
-    $trip_type = $args['trip_type'];
+    $departureDate = $args['departureDate'];
+
 
     //get airport in the cities base on the city id
     $arriveCityCode = getCode($arrival_city_id, 'arrival');
     $departCityCode = getCode($departure_city_id, 'departure');
     
     //get Flight based on departure and arrival city code
-    $flight = getFlight($departCityCode, $arriveCityCode);
+    $flight = getFlight($departCityCode, $arriveCityCode, $departureDate);
     $airline = getAirline($flight[0]['airline']);
     $departureAirport = getAirport($departCityCode);
     $arrivalAirport = getAirport($arriveCityCode);
@@ -26,7 +27,7 @@ $app->get('/itinerary/{departure_city_id}/{arrival_city_id}', function (Request 
     $res->getBody()->write( '
             {
                 "Airline":'.json_encode($airline).',
-                "flights":'.json_encode($flight).',
+                "Flight":'.json_encode($flight).',
                 "Airport":'.json_encode($airports).'
                 
             }
@@ -69,9 +70,9 @@ function getAirline($name){
         echo '{"error": {"text": '.$e->getMessage().'}';
     }
 }
-function getFlight($departCityCode, $arriveCityCode){
+function getFlight($departCityCode, $arriveCityCode, $departureDate){
 
-    $sql = "SELECT * FROM trip.Flights as flight WHERE `departure_airport` = '$departCityCode' AND `arrival_airport` = '$arriveCityCode'"; 
+    $sql = "SELECT * FROM trip.Flights as flight WHERE `departure_airport` = '$departCityCode' AND `arrival_airport` = '$arriveCityCode' AND DATE(departure_time) = '$departureDate'"; 
     try{
         $db = new db();
         $db = $db->connect();
@@ -133,7 +134,7 @@ function getCode($id, $tripType){
 
 $app->get('/cities', function (Request $req, Response $res, array $args){
 
-    $sql = "SELECT city.name FROM trip.City" ;
+    $sql = "SELECT * FROM trip.City" ;
     try{
         $db = new db();
         $db = $db->connect();
