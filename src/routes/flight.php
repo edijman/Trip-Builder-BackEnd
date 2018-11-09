@@ -72,7 +72,7 @@ function getAirline($name){
 }
 function getFlight($departCityCode, $arriveCityCode, $departureDate){
 
-    $sql = "SELECT * FROM trip.Flights as flight WHERE `departure_airport` = '$departCityCode' AND `arrival_airport` = '$arriveCityCode' AND `departure_time` >= '$departureDate' AND `departure_time` < ('$departureDate' + INTERVAL 1 DAY)"; 
+    $sql = "SELECT * FROM trip.Flights as flight WHERE `departure_airport` = '$departCityCode' AND `arrival_airport` = '$arriveCityCode' AND `departure_time` >= '$departureDate' AND `departure_time` < ('$departureDate' + INTERVAL 1 DAY) ORDER BY `price` ASC"; 
     try{
         $db = new db();
         $db = $db->connect();
