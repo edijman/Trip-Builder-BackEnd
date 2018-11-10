@@ -3,12 +3,15 @@
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 
+
+/**
+ * This router return the details of the flight 
+ */
 $app->get('/itinerary/{departure_city_id}/{arrival_city_id}/{departureDate}', function (Request $req, Response $res, array $args){
 
     $departure_city_id = $args['departure_city_id'];
     $arrival_city_id = $args['arrival_city_id'];
-    $departure_date = $args['departure_date'];
-    $arrival_date = $args['arrival_date'];
+    // $arrival_date = $args['arrival_date'];
     $departureDate = $args['departureDate'];
 
 
@@ -18,7 +21,15 @@ $app->get('/itinerary/{departure_city_id}/{arrival_city_id}/{departureDate}', fu
     
     //get Flight based on departure and arrival city code
     $flight = getDirectFlight($departCityCode, $arriveCityCode, $departureDate);
-    $airline = getAirline($flight[0]['airline']);
+    $airline =[];
+    for($i = 0; $i < count($flight); $i++ )
+    {
+        $airline = array_merge($airline, getAirline($flight[$i]['airline']));
+        $airline = array_unique($airline, SORT_REGULAR);
+        // echo print_r($airline);
+    }
+
+    
     $departureAirport = getAirport($departCityCode);
     $arrivalAirport = getAirport($arriveCityCode);
     $airports = array_merge($departureAirport, $arrivalAirport);
@@ -44,7 +55,9 @@ $app->get('/itinerary/{departure_city_id}/{arrival_city_id}/{departureDate}', fu
 
 });
 
-// getAirport
+/**
+ * This method get the details of the airport from the code of the city code
+ */
 function getAirport($code)
 {
     $sql = "SELECT * FROM trip.Airports as airport INNER JOIN trip.city as city ON airport.code = '$code' AND airport.city_id = city.id" ; 
@@ -62,7 +75,9 @@ function getAirport($code)
     }
 }
 
-//get airline from name
+/**
+ * This method get the name and code of the airline from the name 
+ */
 function getAirline($name){
     $sql = "SELECT name, code FROM trip.Airlines as airline WHERE `name` = '$name'"; 
     try{
@@ -80,6 +95,11 @@ function getAirline($name){
     }
 }
 
+
+/**
+ * This method get the details of the flight from a depature location to the arrival using city codes
+ * and date of departure
+ */
 function getDirectFlight($departCityCode, $arriveCityCode, $departureDate){
 
     $sql = "SELECT * FROM trip.Flights as flight WHERE `departure_airport` = '$departCityCode' AND `arrival_airport` = '$arriveCityCode' AND `departure_time` >= '$departureDate' AND `departure_time` < ('$departureDate' + INTERVAL 1 DAY) ORDER BY `price` ASC"; 
@@ -99,7 +119,9 @@ function getDirectFlight($departCityCode, $arriveCityCode, $departureDate){
 }
 
 
-//get Airport code based on the city
+/**
+ * get Airport code based on the city
+ *  */
 function getCode($id, $tripType){
     if($tripType == 'arrival' )
     {
@@ -141,7 +163,9 @@ function getCode($id, $tripType){
 
 }
 
-
+/**
+ * This router return all the cities available in the database
+ */
 $app->get('/cities', function (Request $req, Response $res, array $args){
 
     $sql = "SELECT * FROM trip.City" ;
