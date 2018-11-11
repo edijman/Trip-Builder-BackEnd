@@ -1,60 +1,56 @@
-# ************************************************************
-# Sequel Pro SQL dump
-# Version 4096
-#
-# http://www.sequelpro.com/
-# http://code.google.com/p/sequel-pro/
-#
-# Host: 127.0.0.1 (MySQL 5.5.42)
-# Database: trip
-# Generation Time: 2018-11-09 20:30:22 +0000
-# ************************************************************
+-- phpMyAdmin SQL Dump
+-- version 4.8.3
+-- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1
+-- Generation Time: Nov 10, 2018 at 08:36 PM
+-- Server version: 10.1.36-MariaDB
+-- PHP Version: 7.2.10
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
+SET time_zone = "+00:00";
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+/*!40101 SET NAMES utf8mb4 */;
 
+--
+-- Database: `trip`
+--
 
-# Dump of table Airlines
-# ------------------------------------------------------------
+-- --------------------------------------------------------
 
-DROP TABLE IF EXISTS `Airlines`;
+--
+-- Table structure for table `airlines`
+--
 
-CREATE TABLE `Airlines` (
+CREATE TABLE `airlines` (
   `id` int(255) NOT NULL,
   `name` varchar(255) NOT NULL DEFAULT '',
-  `code` varchar(25) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id` (`id`),
-  UNIQUE KEY `name` (`name`),
-  UNIQUE KEY `code` (`code`)
+  `code` varchar(25) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-LOCK TABLES `Airlines` WRITE;
-/*!40000 ALTER TABLE `Airlines` DISABLE KEYS */;
+--
+-- Dumping data for table `airlines`
+--
 
-INSERT INTO `Airlines` (`id`, `name`, `code`)
-VALUES
-	(1,'Air Canada','AC'),
-	(2,'WestJet flights','WJ'),
-	(3,'Porter Airlines flights','PAF');
+INSERT INTO `airlines` (`id`, `name`, `code`) VALUES
+(1, 'Air Canada', 'AC'),
+(2, 'WestJet flights', 'WJ'),
+(3, 'Porter Airlines', 'PAF');
 
-/*!40000 ALTER TABLE `Airlines` ENABLE KEYS */;
-UNLOCK TABLES;
+-- --------------------------------------------------------
 
+--
+-- Table structure for table `airports`
+--
 
-# Dump of table Airports
-# ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `Airports`;
-
-CREATE TABLE `Airports` (
-  `id` int(255) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `airports` (
+  `id` int(255) NOT NULL,
   `code` varchar(25) NOT NULL,
   `city_id` varchar(25) NOT NULL DEFAULT '',
   `name` varchar(50) NOT NULL,
@@ -62,150 +58,217 @@ CREATE TABLE `Airports` (
   `region_code` varchar(25) NOT NULL,
   `latitude` float NOT NULL,
   `longitude` float NOT NULL,
-  `timezone` varchar(50) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id` (`id`),
-  UNIQUE KEY `code` (`code`),
-  UNIQUE KEY `name` (`name`)
+  `timezone` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-LOCK TABLES `Airports` WRITE;
-/*!40000 ALTER TABLE `Airports` DISABLE KEYS */;
+--
+-- Dumping data for table `airports`
+--
 
-INSERT INTO `Airports` (`id`, `code`, `city_id`, `name`, `country_code`, `region_code`, `latitude`, `longitude`, `timezone`)
-VALUES
-	(1,'YUL','1','Pierre Elliott Trudeau International Airport','CAN','QC',45.5859,-73.6178,'Eastern Standard Time'),
-	(2,'YYZ','2','Toronto Pearson International Airport','CAN','ON',25.2498,55.3506,'Eastern Standard Time'),
-	(3,'YVR','3','Vancouver International Airport','CAN','BC',25.2498,55.3506,'Pacific Standard Time'),
-	(4,'YDT','3','Boundary Bay Airport','CAN','BC',49.0084,-123.04,'Pacific Standard Time'),
-	(5,'YXX','3','Abbotsford International Airport','CAN','BC',25.2498,55.3506,'Pacific Standard Time');
+INSERT INTO `airports` (`id`, `code`, `city_id`, `name`, `country_code`, `region_code`, `latitude`, `longitude`, `timezone`) VALUES
+(1, 'YUL', '1', 'Pierre Elliott Trudeau International Airport', 'CAN', 'QC', 45.5859, -73.6178, 'Eastern Standard Time'),
+(2, 'YYZ', '2', 'Toronto Pearson International Airport', 'CAN', 'ON', 25.2498, 55.3506, 'Eastern Standard Time'),
+(3, 'YVR', '3', 'Vancouver International Airport', 'CAN', 'BC', 25.2498, 55.3506, 'Pacific Standard Time'),
+(4, 'YDT', '3', 'Boundary Bay Airport', 'CAN', 'BC', 49.0084, -123.04, 'Pacific Standard Time'),
+(5, 'YXX', '3', 'Abbotsford International Airport', 'CAN', 'BC', 25.2498, 55.3506, 'Pacific Standard Time');
 
-/*!40000 ALTER TABLE `Airports` ENABLE KEYS */;
-UNLOCK TABLES;
+-- --------------------------------------------------------
 
+--
+-- Table structure for table `city`
+--
 
-# Dump of table City
-# ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `City`;
-
-CREATE TABLE `City` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `city` (
+  `id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL DEFAULT '',
   `region_code` varchar(25) NOT NULL,
-  `country_code` varchar(25) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `City_fk0` (`region_code`),
-  KEY `City_fk1` (`country_code`),
-  CONSTRAINT `City_fk0` FOREIGN KEY (`region_code`) REFERENCES `Region` (`code`),
-  CONSTRAINT `City_fk1` FOREIGN KEY (`country_code`) REFERENCES `Country` (`code`)
+  `country_code` varchar(25) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-LOCK TABLES `City` WRITE;
-/*!40000 ALTER TABLE `City` DISABLE KEYS */;
+--
+-- Dumping data for table `city`
+--
 
-INSERT INTO `City` (`id`, `name`, `region_code`, `country_code`)
-VALUES
-	(1,'Montreal','QC','CAN'),
-	(2,'Toronto','ON','CAN'),
-	(3,'Vancouver','BC','CAN');
+INSERT INTO `city` (`id`, `name`, `region_code`, `country_code`) VALUES
+(1, 'Montreal', 'QC', 'CAN'),
+(2, 'Toronto', 'ON', 'CAN'),
+(3, 'Vancouver', 'BC', 'CAN');
 
-/*!40000 ALTER TABLE `City` ENABLE KEYS */;
-UNLOCK TABLES;
+-- --------------------------------------------------------
 
+--
+-- Table structure for table `country`
+--
 
-# Dump of table Country
-# ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `Country`;
-
-CREATE TABLE `Country` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `country` (
+  `id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL DEFAULT '',
-  `code` varchar(25) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `name` (`name`),
-  UNIQUE KEY `code` (`code`)
+  `code` varchar(25) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-LOCK TABLES `Country` WRITE;
-/*!40000 ALTER TABLE `Country` DISABLE KEYS */;
+--
+-- Dumping data for table `country`
+--
 
-INSERT INTO `Country` (`id`, `name`, `code`)
-VALUES
-	(1,'Canada','CAN');
+INSERT INTO `country` (`id`, `name`, `code`) VALUES
+(1, 'Canada', 'CAN');
 
-/*!40000 ALTER TABLE `Country` ENABLE KEYS */;
-UNLOCK TABLES;
+-- --------------------------------------------------------
 
+--
+-- Table structure for table `flights`
+--
 
-# Dump of table Flights
-# ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `Flights`;
-
-CREATE TABLE `Flights` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `flights` (
+  `id` int(11) NOT NULL,
   `airline` varchar(25) NOT NULL,
   `number` int(25) NOT NULL,
   `departure_airport` varchar(25) NOT NULL,
   `arrival_airport` varchar(25) NOT NULL,
   `departure_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `arrival_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `price` double NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `number` (`number`)
+  `price` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-LOCK TABLES `Flights` WRITE;
-/*!40000 ALTER TABLE `Flights` DISABLE KEYS */;
+--
+-- Dumping data for table `flights`
+--
 
-INSERT INTO `Flights` (`id`, `airline`, `number`, `departure_airport`, `arrival_airport`, `departure_time`, `arrival_time`, `price`)
-VALUES
-	(1,'Air Canada',200,'YUL','YYZ','2018-11-09 00:00:00','2018-11-09 00:00:10',59),
-	(2,'Air Canada',301,'YUL','YYZ','2018-11-09 10:00:00','2018-11-09 13:00:00',59),
-	(3,'Porter Airlines flights',302,'YUL','YXX','2018-11-09 10:00:00','2018-11-09 13:00:00',59),
-	(4,'Porter Airlines flights',345,'YYZ','YXX','2018-11-09 10:00:00','2018-11-09 13:00:00',59),
-	(5,'Porter Airlines flights',366,'YUL','YYZ','2018-11-09 10:00:00','2018-11-09 13:00:00',59);
+INSERT INTO `flights` (`id`, `airline`, `number`, `departure_airport`, `arrival_airport`, `departure_time`, `arrival_time`, `price`) VALUES
+(1, 'Air Canada', 200, 'YUL', 'YYZ', '2018-11-10 05:00:00', '2018-11-11 05:00:10', 59),
+(2, 'Air Canada', 301, 'YUL', 'YYZ', '2018-11-10 15:00:00', '2018-11-11 18:00:00', 59),
+(3, 'Porter Airlines', 302, 'YUL', 'YXX', '2018-11-10 15:00:00', '2018-11-11 18:00:00', 59),
+(4, 'Porter Airlines', 345, 'YYZ', 'YUL', '2018-11-10 20:00:00', '2018-11-11 18:00:00', 59),
+(5, 'Porter Airlines', 366, 'YUL', 'YYZ', '2018-11-10 15:00:00', '2018-11-11 18:00:00', 59);
 
-/*!40000 ALTER TABLE `Flights` ENABLE KEYS */;
-UNLOCK TABLES;
+-- --------------------------------------------------------
 
+--
+-- Table structure for table `region`
+--
 
-# Dump of table Region
-# ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `Region`;
-
-CREATE TABLE `Region` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `region` (
+  `id` int(11) NOT NULL,
   `name` varchar(25) NOT NULL,
   `code` varchar(25) NOT NULL,
-  `country_code` varchar(25) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `name` (`name`),
-  UNIQUE KEY `code` (`code`),
-  KEY `Region_fk0` (`country_code`),
-  CONSTRAINT `Region_fk0` FOREIGN KEY (`country_code`) REFERENCES `Country` (`code`)
+  `country_code` varchar(25) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-LOCK TABLES `Region` WRITE;
-/*!40000 ALTER TABLE `Region` DISABLE KEYS */;
+--
+-- Dumping data for table `region`
+--
 
-INSERT INTO `Region` (`id`, `name`, `code`, `country_code`)
-VALUES
-	(1,'Quebec','QC','CAN'),
-	(2,'Ontario','ON','CAN'),
-	(3,'British Columbia','BC','CAN');
+INSERT INTO `region` (`id`, `name`, `code`, `country_code`) VALUES
+(1, 'Quebec', 'QC', 'CAN'),
+(2, 'Ontario', 'ON', 'CAN'),
+(3, 'British Columbia', 'BC', 'CAN');
 
-/*!40000 ALTER TABLE `Region` ENABLE KEYS */;
-UNLOCK TABLES;
+--
+-- Indexes for dumped tables
+--
 
+--
+-- Indexes for table `airlines`
+--
+ALTER TABLE `airlines`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `id` (`id`),
+  ADD UNIQUE KEY `name` (`name`),
+  ADD UNIQUE KEY `code` (`code`);
 
+--
+-- Indexes for table `airports`
+--
+ALTER TABLE `airports`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `id` (`id`),
+  ADD UNIQUE KEY `code` (`code`),
+  ADD UNIQUE KEY `name` (`name`);
 
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+--
+-- Indexes for table `city`
+--
+ALTER TABLE `city`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `City_fk0` (`region_code`),
+  ADD KEY `City_fk1` (`country_code`);
+
+--
+-- Indexes for table `country`
+--
+ALTER TABLE `country`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `name` (`name`),
+  ADD UNIQUE KEY `code` (`code`);
+
+--
+-- Indexes for table `flights`
+--
+ALTER TABLE `flights`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `number` (`number`);
+
+--
+-- Indexes for table `region`
+--
+ALTER TABLE `region`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `name` (`name`),
+  ADD UNIQUE KEY `code` (`code`),
+  ADD KEY `Region_fk0` (`country_code`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `airports`
+--
+ALTER TABLE `airports`
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `city`
+--
+ALTER TABLE `city`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `country`
+--
+ALTER TABLE `country`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `flights`
+--
+ALTER TABLE `flights`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `region`
+--
+ALTER TABLE `region`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `city`
+--
+ALTER TABLE `city`
+  ADD CONSTRAINT `City_fk0` FOREIGN KEY (`region_code`) REFERENCES `region` (`code`),
+  ADD CONSTRAINT `City_fk1` FOREIGN KEY (`country_code`) REFERENCES `country` (`code`);
+
+--
+-- Constraints for table `region`
+--
+ALTER TABLE `region`
+  ADD CONSTRAINT `Region_fk0` FOREIGN KEY (`country_code`) REFERENCES `country` (`code`);
+COMMIT;
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
