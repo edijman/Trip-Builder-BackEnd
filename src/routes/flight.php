@@ -60,7 +60,7 @@ $app->get('/itinerary/{departure_city_id}/{arrival_city_id}/{departureDate}', fu
  */
 function getAirport($code)
 {
-    $sql = "SELECT * FROM trip.Airports as airport INNER JOIN trip.city as city ON airport.code = '$code' AND airport.city_id = city.id" ; 
+    $sql = "SELECT * FROM trip.airports as airport INNER JOIN trip.city as city ON airport.code = '$code' AND airport.city_id = city.id" ; 
     try{
         $db = new db();
         $db = $db->connect();
@@ -79,7 +79,7 @@ function getAirport($code)
  * This method get the name and code of the airline from the name 
  */
 function getAirline($name){
-    $sql = "SELECT name, code FROM trip.Airlines as airline WHERE `name` = '$name'"; 
+    $sql = "SELECT name, code FROM trip.airlines as airline WHERE `name` = '$name'"; 
     try{
         $db = new db();
         $db = $db->connect();
@@ -102,7 +102,7 @@ function getAirline($name){
  */
 function getDirectFlight($departCityCode, $arriveCityCode, $departureDate){
 
-    $sql = "SELECT * FROM trip.Flights as flight WHERE `departure_airport` = '$departCityCode' AND `arrival_airport` = '$arriveCityCode' AND `departure_time` >= '$departureDate' AND `departure_time` < ('$departureDate' + INTERVAL 1 DAY) ORDER BY `price` ASC"; 
+    $sql = "SELECT * FROM trip.flights as flight WHERE `departure_airport` = '$departCityCode' AND `arrival_airport` = '$arriveCityCode' AND `departure_time` >= '$departureDate' AND `departure_time` < ('$departureDate' + INTERVAL 1 DAY) ORDER BY `price` ASC"; 
     try{
         $db = new db();
         $db = $db->connect();
@@ -125,7 +125,7 @@ function getDirectFlight($departCityCode, $arriveCityCode, $departureDate){
 function getCode($id, $tripType){
     if($tripType == 'arrival' )
     {
-        $sql = "SELECT code FROM trip.Airports as airport INNER JOIN trip.Flights as flight ON airport.code = flight.arrival_airport  WHERE `city_id` = $id"; 
+        $sql = "SELECT code FROM trip.airports as airport INNER JOIN trip.flights as flight ON airport.code = flight.arrival_airport  WHERE `city_id` = $id"; 
         try{
             $db = new db();
             $db = $db->connect();
@@ -142,7 +142,7 @@ function getCode($id, $tripType){
     }
     else if($tripType == 'departure' ) 
     {
-        $sql = "SELECT code FROM trip.Airports as airport INNER JOIN trip.Flights as flight ON airport.code = flight.departure_airport  WHERE `city_id` = $id"; 
+        $sql = "SELECT code FROM trip.airports as airport INNER JOIN trip.flights as flight ON airport.code = flight.departure_airport  WHERE `city_id` = $id"; 
         try{
             $db = new db();
             $db = $db->connect();
