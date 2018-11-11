@@ -17,7 +17,7 @@ in in the application:
   <li>Install Composer, follow the instruction <a href="https://getcomposer.org/" target="_blank">here</a>.</li>
   <li>Download the Trip Builder Backend program, go to your terminal, navigate to the director with the terminal, and run 'composer install' to install the dependencies</li>
   <li>Place the updated program in directory of the server being used</li>
-  <li>Create the database that would be used, give it a name of your choice, then go to src/config/db.php and update the config file.</li>
+  <li>Create the database that would be used, name is 'trip', then go to src/config/db.php and update the config file.</li>
   <li>Copy the content in _questions.sql and run in the datebase you just created, to create the tables and content</li>
   <li>Start the server you are using and go to 'http://*server name*/*name of directory file is placed*/*File name*/cities' This should successful return a json object of cities.</li>
 </ol>
