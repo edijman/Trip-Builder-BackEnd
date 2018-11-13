@@ -2,7 +2,7 @@
     class db{
         private $dbhost = 'localhost';
         private $dbuser = 'root';
-        private $dbpass = '';
+        private $dbpass = 'root';
         private $dbname = 'trip';
         
         public function connect(){
