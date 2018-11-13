@@ -111,44 +111,28 @@ function getDirectFlight($departCityCode, $arriveCityCode, $departureDate){
 function getCode($id, $tripType){
     if($tripType == 'arrival' )
     {
-        $sql = "SELECT code FROM trip.Airports as airport INNER JOIN trip.Flights as flight ON airport.code = flight.arrival_airport  WHERE `city_id` = :id"; 
-        try{
-            $db = new db();
-            $db = $db->connect();
-            $stmt = $db->prepare($sql);
-            $stmt->bindParam(':id', $id);
-            $stmt->execute();
-            $Airport_code = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            $db = null;
-            // echo 'Arrival'.$Airport_code[0]["code"];
-            return $Airport_code[0]["code"];
-            
-        }
-        catch(PDOException $e){
-            echo '{"error": {"text": '.$e->getMessage().'}';
-        }
+        $sql = "SELECT code FROM trip.Airports as airport INNER JOIN trip.Flights as flight ON airport.code = flight.arrival_airport  WHERE `city_id` = :id";
     }
-    else if($tripType == 'departure' ) 
+    else if($tripType == 'departure')
     {
         $sql = "SELECT code FROM trip.Airports as airport INNER JOIN trip.Flights as flight ON airport.code = flight.departure_airport  WHERE `city_id` = :id"; 
-        try{
-            $db = new db();
-            $db = $db->connect();
-            $stmt = $db->prepare($sql);
-            $stmt->bindParam(':id', $id);
-            $stmt->execute();
-            $Airport_code = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            $db = null;
-            // echo 'Departure'.$Airport_code[0]["code"];
-            return $Airport_code[0]["code"];
-            
-        }
-        catch(PDOException $e){
-            echo '{"error": {"text": '.$e->getMessage().'}';
-        }
-
     }
-    
+    try{
+        $db = new db();
+        $db = $db->connect();
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+        $Airport_code = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $db = null;
+        // echo 'Arrival'.$Airport_code[0]["code"];
+        return $Airport_code[0]["code"];
+        
+    }
+    catch(PDOException $e){
+        echo '{"error": {"text": '.$e->getMessage().'}';
+    }
+
     return 'Airport does not exist';
 
 }
