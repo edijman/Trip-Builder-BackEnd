@@ -17,7 +17,7 @@
                     
                 }
                 catch(PDOException $e){
-                    echo '{"error": {"text": '.$e->getMessage().'}';
+                    echo $e->getMessage();
                 }
             }
 
@@ -38,7 +38,7 @@
                     
                 }
                 catch(PDOException $e){
-                    echo '{"error": {"text": '.$e->getMessage().'}';
+                    echo $e->getMessage();
                 }
             }
     }
