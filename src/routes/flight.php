@@ -26,12 +26,12 @@ $app->get('/itinerary/{departure_city_id}/{arrival_city_id}/{departureDate}', fu
     $flight = $flightObj->getDirectFlight($db, $departCityCode, $arriveCityCode, $departureDate);
     
     //Get the airline for each flight
-    $airline = getAirlines($db, $flight, $flightObj);
-    $airport = getAirports($db, $airportObj, $departCityCode, $arriveCityCode);
+    $airlines = getAirlines($db, $flight, $flightObj);
+    $airports = getAirports($db, $airportObj, $departCityCode, $arriveCityCode);
 
     $res->getBody()->write( '
             {
-                "Airline":'.json_encode($airline).',
+                "Airline":'.json_encode($airlines).',
                 "Flight":'.json_encode($flight).',
                 "Airport":'.json_encode($airports).'
             }
