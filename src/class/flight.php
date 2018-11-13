@@ -3,7 +3,8 @@
     class Flight
     {
             //get airline from name
-            function getAirline($db, $name){
+            function getAirline($db, $name)
+            {
                 $sql = "SELECT name, code FROM trip.airlines as airline WHERE `name` = :name"; 
                 try
                 {
