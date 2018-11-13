@@ -26,16 +26,8 @@ $app->get('/itinerary/{departure_city_id}/{arrival_city_id}/{departureDate}', fu
     $flight = $flightObj->getDirectFlight($db, $departCityCode, $arriveCityCode, $departureDate);
     
     //Get the airline for each flight
-    $airline =[];
-    for($i = 0; $i < count($flight); $i++ )
-    {
-        $airline = array_merge($airline, $flightObj->getAirline($db, $flight[$i]['airline']));
-        $airline = array_unique($airline, SORT_REGULAR);
-    }
-
-    $departureAirport = $airportObj->getAirport($db, $departCityCode);
-    $arrivalAirport = $airportObj->getAirport($db, $arriveCityCode);
-    $airports = array_merge($departureAirport, $arrivalAirport);
+    $airline = getAirlines($db, $flight, $flightObj);
+    $airport = getAirports($db, $airportObj, $departCityCode, $arriveCityCode);
 
     $res->getBody()->write( '
             {
@@ -45,4 +37,26 @@ $app->get('/itinerary/{departure_city_id}/{arrival_city_id}/{departureDate}', fu
             }
     ');
 });
+
+//This method returns all the Airlines invlove in the flight
+function getAirlines($db, $flight, $flightObj)
+{
+    $airline =[];
+
+    for($i = 0; $i < count($flight); $i++ )
+    {
+        $airline = array_merge($airline, $flightObj->getAirline($db, $flight[$i]['airline']));
+        $airline = array_unique($airline, SORT_REGULAR);
+    }
+    return $airline;
+}
+
+//This method returns all the Airport invlove in the flight
+function getAirports($db, $airportObj, $departCityCode, $arriveCityCode)
+{
+    $departureAirport = $airportObj->getAirport($db, $departCityCode);
+    $arrivalAirport = $airportObj->getAirport($db, $arriveCityCode);
+    $airports = array_merge($departureAirport, $arrivalAirport);
+    return $airports;
+}
 ?>
