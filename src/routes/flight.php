@@ -19,7 +19,13 @@ $app->get('/itinerary/{departure_city_id}/{arrival_city_id}/{departureDate}', fu
     
     //get Flight based on departure and arrival city code
     $flight = getDirectFlight($departCityCode, $arriveCityCode, $departureDate);
-    $airline = getAirline($flight[0]['airline']);
+    $airline =[];
+    for($i = 0; $i < count($flight); $i++ )
+    {
+        $airline = array_merge($airline, getAirline($flight[$i]['airline']));
+        $airline = array_unique($airline, SORT_REGULAR);
+        // echo print_r($airline);
+    }
     $departureAirport = getAirport($departCityCode);
     $arrivalAirport = getAirport($arriveCityCode);
     $airports = array_merge($departureAirport, $arrivalAirport);
@@ -38,7 +44,7 @@ $app->get('/itinerary/{departure_city_id}/{arrival_city_id}/{departureDate}', fu
 // getAirport
 function getAirport($code)
 {
-    $sql = "SELECT * FROM trip.Airports as airport INNER JOIN trip.city as city ON airport.code = :code AND airport.city_id = city.id" ; 
+    $sql = "SELECT * FROM trip.airports as airport INNER JOIN trip.city as city ON airport.code = :code AND airport.city_id = city.id" ; 
     try
     {
         $db = new db();
@@ -58,7 +64,7 @@ function getAirport($code)
 
 //get airline from name
 function getAirline($name){
-    $sql = "SELECT name, code FROM trip.Airlines as airline WHERE `name` = :name"; 
+    $sql = "SELECT name, code FROM trip.airlines as airline WHERE `name` = :name"; 
     try
     {
         $db = new db();
@@ -79,7 +85,7 @@ function getAirline($name){
 
 function getDirectFlight($departCityCode, $arriveCityCode, $departureDate)
 {
-    $sql = "SELECT * FROM trip.Flights as flight WHERE `departure_airport` = :departCityCode AND `arrival_airport` = :arriveCityCode AND `departure_time` >= :departureDate AND `departure_time` < (:departureDate + INTERVAL 1 DAY) ORDER BY `price` ASC"; 
+    $sql = "SELECT * FROM trip.flights as flight WHERE `departure_airport` = :departCityCode AND `arrival_airport` = :arriveCityCode AND `departure_time` >= :departureDate AND `departure_time` < (:departureDate + INTERVAL 1 DAY) ORDER BY `price` ASC"; 
     try
     {
         $db = new db();
@@ -106,11 +112,11 @@ function getCode($id, $tripType)
 {
     if($tripType == 'arrival' )
     {
-        $sql = "SELECT code FROM trip.Airports as airport INNER JOIN trip.Flights as flight ON airport.code = flight.arrival_airport  WHERE `city_id` = :id";
+        $sql = "SELECT code FROM trip.airports as airport INNER JOIN trip.flights as flight ON airport.code = flight.arrival_airport  WHERE `city_id` = :id";
     }
     else if($tripType == 'departure')
     {
-        $sql = "SELECT code FROM trip.Airports as airport INNER JOIN trip.Flights as flight ON airport.code = flight.departure_airport  WHERE `city_id` = :id"; 
+        $sql = "SELECT code FROM trip.airports as airport INNER JOIN trip.flights as flight ON airport.code = flight.departure_airport  WHERE `city_id` = :id"; 
     }
     try
     {
@@ -136,7 +142,7 @@ function getCode($id, $tripType)
 
 $app->get('/cities', function (Request $req, Response $res, array $args)
 {
-    $sql = "SELECT * FROM trip.City" ;
+    $sql = "SELECT * FROM trip.city" ;
     try{
         $db = new db();
         $db = $db->connect();
