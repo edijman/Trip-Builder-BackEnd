@@ -1,26 +1,10 @@
 <?php 
-require $_SERVER['DOCUMENT_ROOT']. "/src/config/db.php";
-require $_SERVER['DOCUMENT_ROOT']. "/src/class/city.php";
 require $_SERVER['DOCUMENT_ROOT']. "/src/class/airport.php";
 require $_SERVER['DOCUMENT_ROOT']. "/src/class/flight.php";
 
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 
-
-
-$app->get('/cities', function (Request $req, Response $res, array $args)
-{
-    $city = new City();
-    $db = new db();
-    $db = $db->connect();
-    $cities = $city->getCities($db);
-    $res->getBody()->write( '
-    {
-        "cities":'.json_encode($cities).'
-    }
-    ');
-});
 
 $app->get('/itinerary/{departure_city_id}/{arrival_city_id}/{departureDate}', function (Request $req, Response $res, array $args)
 {
