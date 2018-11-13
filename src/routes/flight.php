@@ -42,7 +42,6 @@ $app->get('/itinerary/{departure_city_id}/{arrival_city_id}/{departureDate}', fu
                 "Airline":'.json_encode($airline).',
                 "Flight":'.json_encode($flight).',
                 "Airport":'.json_encode($airports).'
-                
             }
     ');
 });
