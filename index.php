@@ -5,13 +5,13 @@ header("Access-Control-Allow-Origin: *");
 require './vendor/autoload.php';
 require __DIR__. '/bootstrap/app.php';
 
-//Routes
-require './src/routes/flight.php';
-require './src/routes/city.php';
+require $_SERVER['DOCUMENT_ROOT']. "/src/routes/city.php";
+require $_SERVER['DOCUMENT_ROOT']. "/src/routes/flight.php";
 
 //Default Routes
 $app->get('/', function (Request $req,  Response $res, $args = []) {
     return $res->withStatus(400)->write('Bad Request');
 });
+
 
 $app->run();
